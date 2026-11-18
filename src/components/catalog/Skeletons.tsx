@@ -24,3 +24,16 @@ export function HomeSkeleton() {
     </div>
   );
 }
+
+export function GridSkeleton() {
+  return (
+    <div className="space-y-4 px-4 sm:px-6" aria-busy="true" aria-label="Carregando">
+      <div className={`${pulse} h-8 w-56`} />
+      <div className="grid grid-cols-3 gap-2 sm:grid-cols-4 sm:gap-3 md:grid-cols-5 lg:grid-cols-6">
+        {Array.from({ length: 18 }, (_, i) => (
+          <div key={i} className={`${pulse} aspect-[2/3]`} />
+        ))}
+      </div>
+    </div>
+  );
+}
