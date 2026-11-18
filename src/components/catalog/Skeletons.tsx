@@ -37,3 +37,19 @@ export function GridSkeleton() {
     </div>
   );
 }
+
+export function MovieDetailSkeleton() {
+  return (
+    <div aria-busy="true" aria-label="Carregando">
+      <div className={`${pulse} aspect-[21/9] max-h-[50vh] w-full rounded-none`} />
+      <div className="mx-auto -mt-20 flex max-w-5xl gap-6 px-4 sm:px-6">
+        <div className={`${pulse} hidden aspect-[2/3] w-48 shrink-0 md:block`} />
+        <div className="flex-1 space-y-3 pt-24 md:pt-20">
+          <div className={`${pulse} h-8 w-2/3`} />
+          <div className={`${pulse} h-4 w-1/3`} />
+          <div className={`${pulse} h-20 w-full`} />
+        </div>
+      </div>
+    </div>
+  );
+}
