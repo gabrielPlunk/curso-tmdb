@@ -34,7 +34,7 @@ test("404 vira TmdbNotFoundError", async () => {
 
 test("500 vira TmdbError com status", async () => {
   respond(500);
-  const err = await tmdbFetch("/x").catch((e) => e);
+  const err = (await tmdbFetch("/x").catch((e: unknown) => e)) as TmdbError;
   expect(err).toBeInstanceOf(TmdbError);
   expect(err).not.toBeInstanceOf(TmdbNotFoundError);
   expect(err.status).toBe(500);
