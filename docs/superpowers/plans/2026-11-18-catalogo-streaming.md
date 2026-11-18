@@ -39,7 +39,7 @@ Outros casos cobertos pelos testes das tarefas: pôster ou foto ausente vira mar
 
 ---
 
-### Tarefa 0 (do Gabriel): conseguir a chave do TMDB
+### Task 0 (do Gabriel): conseguir a chave do TMDB
 
 **Em linguagem simples:** o TMDB só entrega dados para quem se identifica. Você cria uma conta e recebe um "crachá" (o token). O site usa esse token, escondido no servidor, toda vez que pede filmes.
 
@@ -49,7 +49,7 @@ Outros casos cobertos pelos testes das tarefas: pôster ou foto ausente vira mar
 
 ---
 
-### Tarefa 1: base do projeto, listas fixas e leitura do endereço
+### Task 1: base do projeto, listas fixas e leitura do endereço
 
 **Em linguagem simples:** aqui o projeto é criado, como as fundações de uma casa. Também entram as duas listas fixas do app (os seis streamings e os oito gêneros) e uma função que lê o endereço da página para saber qual streaming está selecionado. Se o endereço vier estranho, ela escolhe "Todos" em vez de quebrar.
 
@@ -135,7 +135,7 @@ Conferir com `git status` que `.env.local` e `.superpowers/` **não** foram regi
 
 ---
 
-### Tarefa 2: cliente do TMDB
+### Task 2: cliente do TMDB
 
 **Em linguagem simples:** este é o "telefone" do site com o TMDB. Toda conversa com a API passa por aqui. É aqui que a chave fica escondida e que respostas ruins são tratadas: "não encontrado" é diferente de "deu erro", e a falta da chave gera um aviso claro.
 
@@ -174,7 +174,7 @@ test("sem token, erro claro e nenhuma chamada", async () => {
 
 ---
 
-### Tarefa 3: listas de filmes (vitrine, "Ver tudo" e busca)
+### Task 3: listas de filmes (vitrine, "Ver tudo" e busca)
 
 **Em linguagem simples:** o TMDB devolve os dados num formato próprio, cheio de campos que não usamos. Aqui o site "traduz" cada filme para um formato simples (título, pôster, ano e nota). Também monta o pedido que diz "filmes no Brasil, por assinatura ou grátis, neste streaming, deste gênero".
 
@@ -243,7 +243,7 @@ test("tmdbImage", () => {
 
 ---
 
-### Tarefa 4: detalhes do filme e "onde assistir"
+### Task 4: detalhes do filme e "onde assistir"
 
 **Em linguagem simples:** aqui o site organiza a página de um filme. Separa os streamings em Assinatura, Grátis, Aluguel e Compra, escolhe o melhor trailer (de preferência em português) e decide qual streaming aparece no destaque da vitrine. Quando o filme não está em lugar nenhum no Brasil, isso fica registrado em vez de quebrar a página.
 
@@ -298,7 +298,7 @@ Os helpers `p(id, priority)`, `v(key, type, lang)` e `rawWith(overrides)` ficam 
 
 ---
 
-### Tarefa 5: consultas com cache
+### Task 5: consultas com cache
 
 **Em linguagem simples:** são os "pedidos prontos" que as páginas usam: a fileira de Ação na Netflix, os detalhes de um filme, os semelhantes, a busca. Cada resposta fica guardada por algumas horas (cache). Assim, se mil pessoas abrirem a vitrine, o TMDB é consultado uma vez, não mil.
 
@@ -344,7 +344,7 @@ test("getFeatured pula filmes sem backdrop e devolve null se nenhum tem", async 
 
 ---
 
-### Tarefa 6: esqueleto visual (cabeçalho, rodapé, erro e não encontrado)
+### Task 6: esqueleto visual (cabeçalho, rodapé, erro e não encontrado)
 
 **Em linguagem simples:** aqui fica a "moldura" que aparece em todas as páginas: o fundo escuro, o cabeçalho com o nome do site e a busca, e o rodapé com os créditos obrigatórios ao TMDB. Também entram as telas de "algo deu errado" e de "página não encontrada", para que nenhum erro mostre uma tela feia ou em branco.
 
@@ -387,7 +387,7 @@ test("busca envia GET para /busca com o campo q", () => {
 
 ---
 
-### Tarefa 7: vitrine (tela inicial)
+### Task 7: vitrine (tela inicial)
 
 **Em linguagem simples:** a tela principal. Os botões de streaming no topo mudam o endereço (por exemplo, `?servico=netflix`) e, com isso, a vitrine inteira. Logo abaixo ficam o filme em destaque e as fileiras de pôsteres que rolam para o lado. Fileiras vazias somem. Enquanto carrega, aparecem blocos cinza no formato das fileiras.
 
@@ -454,7 +454,7 @@ test("Hero usa a preposição certa", () => {
 
 ---
 
-### Tarefa 8: "Ver tudo" com carregar mais
+### Task 8: "Ver tudo" com carregar mais
 
 **Em linguagem simples:** ao clicar em "Ver tudo" numa fileira, abre uma grade com mais filmes daquela categoria, respeitando o streaming escolhido. Conforme a pessoa rola até o fim, mais filmes aparecem sozinhos, até acabarem.
 
@@ -508,7 +508,7 @@ test("LoadMore com erro mostra Tentar carregar mais", async () => { /* action re
 
 ---
 
-### Tarefa 9: página do filme
+### Task 9: página do filme
 
 **Em linguagem simples:** a página de cada filme: imagem grande, pôster, ano, duração, nota, sinopse, trailer, elenco, "Onde assistir no Brasil" separado por tipo (com o crédito à JustWatch) e uma fileira de semelhantes que também estão nos streamings. Se o filme não existir, aparece "Filme não encontrado". Se ele não estiver em nenhum streaming, a página diz isso claramente.
 
@@ -596,7 +596,7 @@ O jsdom não implementa `HTMLDialogElement.showModal`. Criar um stub em `src/tes
 
 ---
 
-### Tarefa 10: busca
+### Task 10: busca
 
 **Em linguagem simples:** a busca do cabeçalho leva a uma página de resultados. Ela procura em todo o acervo do TMDB, então avisa que alguns filmes podem não estar em streaming. Busca vazia não consulta nada e só pede que a pessoa digite algo.
 
@@ -640,7 +640,7 @@ test("normalizeQuery", () => {
 
 ---
 
-### Tarefa 11: verificação final
+### Task 11: verificação final
 
 **Em linguagem simples:** antes de dizer que está pronto, o site inteiro é testado como um visitante faria, no computador e no celular. Isso confirma que as regras do plano (crédito, chave escondida, filmes sempre disponíveis) estão valendo.
 
