@@ -10,14 +10,14 @@ export type ServiceSlug =
   | "prime-video"
   | "disney-plus"
   | "max"
-  | "apple-tv-plus"
+  | "apple-tv"
   | "globoplay";
 
 export type Service = {
   slug: ServiceSlug;
   name: string;
   providerId: number;
-  /** Para escrever "Disponível na Netflix" / "Disponível no Max". */
+  /** Para escrever "Disponível na Netflix" / "Disponível no Prime Video". */
   preposition: "na" | "no";
 };
 
@@ -25,8 +25,8 @@ export const SERVICES: readonly Service[] = [
   { slug: "netflix", name: "Netflix", providerId: 8, preposition: "na" },
   { slug: "prime-video", name: "Prime Video", providerId: 119, preposition: "no" },
   { slug: "disney-plus", name: "Disney+", providerId: 337, preposition: "no" },
-  { slug: "max", name: "Max", providerId: 1899, preposition: "no" },
-  { slug: "apple-tv-plus", name: "Apple TV+", providerId: 350, preposition: "no" },
+  { slug: "max", name: "HBO Max", providerId: 1899, preposition: "na" },
+  { slug: "apple-tv", name: "Apple TV", providerId: 350, preposition: "na" },
   { slug: "globoplay", name: "Globoplay", providerId: 307, preposition: "no" },
 ];
 

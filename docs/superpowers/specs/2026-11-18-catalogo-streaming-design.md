@@ -88,7 +88,7 @@ Ação                                          Ver tudo →
 ```
 
 - **Filtro de streaming no topo**, com um serviço por vez e o valor guardado no endereço (`/?servico=netflix`). Isso permite compartilhar o link, faz o filtro funcionar no servidor e prepara o "meus streamings" salvo no futuro.
-- **Serviços (lista fixa):** Netflix, Prime Video, Disney+, Max, Apple TV+ e Globoplay.
+- **Serviços (lista fixa):** Netflix, Prime Video, Disney+, HBO Max, Apple TV e Globoplay (nomes atualizados em 2026-11-18 para bater com o TMDB no Brasil; antes "Max" e "Apple TV+").
 - **"Todos" quer dizer qualquer um desses seis** (`with_watch_providers` com IDs separados por `|`), e não qualquer streaming do Brasil.
 - **Todas as fileiras** usam `discover/movie` com `watch_region=BR`, `with_watch_monetization_types=flatrate|free|ads`, os serviços do filtro e, quando for o caso, `with_genres`.
 - **"Em alta"** é ordenada por popularidade (`sort_by=popularity.desc`).

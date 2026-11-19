@@ -12,7 +12,7 @@ const m: MovieSummary = { id: 7, title: "Duna", posterPath: "/p.jpg", backdropPa
 
 test("ServiceChips marca o ativo e monta os links", () => {
   render(<ServiceChips selected="max" />);
-  expect(screen.getByRole("link", { name: "Max" })).toHaveAttribute("aria-current", "page");
+  expect(screen.getByRole("link", { name: "HBO Max" })).toHaveAttribute("aria-current", "page");
   expect(screen.getByRole("link", { name: "Todos" })).not.toHaveAttribute("aria-current");
   expect(screen.getByRole("link", { name: "Todos" })).toHaveAttribute("href", "/");
   expect(screen.getByRole("link", { name: "Netflix" })).toHaveAttribute("href", "/?servico=netflix");
