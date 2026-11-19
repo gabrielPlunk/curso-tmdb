@@ -3,6 +3,7 @@ import userEvent from "@testing-library/user-event";
 import { beforeEach, expect, test, vi } from "vitest";
 import { setMark } from "@/lib/marks/actions";
 import type { MarkRef, SetMarkResult } from "@/lib/marks/types";
+import { MarkButtons } from "./MarkButtons";
 import { MarksProvider, MarksSeed, useMarks } from "./MarksProvider";
 
 const push = vi.fn();
@@ -101,3 +102,44 @@ test("enquanto salva, um segundo clique no mesmo filme é ignorado", async () =>
   expect(state()).toBe("true|true|assisti|false|0|1");
 });
 
+
+function seeded(ui: React.ReactNode, marks: MarkRef[] = [], signedIn = true) {
+  return render(
+    <MarksProvider>
+      <MarksSeed signedIn={signedIn} marks={marks} />
+      {ui}
+    </MarksProvider>,
+  );
+}
+
+test("MarkButtons mostra Quero assistir e Já vi com o estado", () => {
+  seeded(<MarkButtons movieId={1} />, [{ movieId: 1, status: "assisti" }]);
+  expect(screen.getByRole("button", { name: "Quero assistir" })).toHaveAttribute("aria-pressed", "false");
+  expect(screen.getByRole("button", { name: "Já vi" })).toHaveAttribute("aria-pressed", "true");
+});
+
+test("MarkButtons: clicar em Já vi marca como assistido", async () => {
+  seeded(<MarkButtons movieId={1} />);
+  await userEvent.click(screen.getByRole("button", { name: "Já vi" }));
+  expect(mockedSetMark).toHaveBeenCalledWith(1, "assisti");
+  expect(screen.getByRole("button", { name: "Já vi" })).toHaveAttribute("aria-pressed", "true");
+});
+
+test("MarkButtons fica invisível até as marcações chegarem", () => {
+  render(
+    <MarksProvider>
+      <MarkButtons movieId={1} />
+    </MarksProvider>,
+  );
+  const group = screen.getByRole("group", { hidden: true });
+  expect(group).toHaveAttribute("aria-hidden", "true");
+  expect(group).toHaveClass("invisible");
+});
+
+test("MarkButtons desabilita os dois botões enquanto salva", async () => {
+  mockedSetMark.mockReturnValueOnce(new Promise(() => {}));
+  seeded(<MarkButtons movieId={1} />);
+  await userEvent.click(screen.getByRole("button", { name: "Quero assistir" }));
+  expect(screen.getByRole("button", { name: "Quero assistir" })).toBeDisabled();
+  expect(screen.getByRole("button", { name: "Já vi" })).toBeDisabled();
+});

@@ -4,6 +4,7 @@ import { Suspense } from "react";
 import { AmbientSource } from "@/components/ambient/Ambient";
 import { MovieRow } from "@/components/catalog/MovieRow";
 import { MovieDetailSkeleton, RowSkeleton } from "@/components/catalog/Skeletons";
+import { MarkButtons } from "@/components/marks/MarkButtons";
 import { BackButton } from "@/components/movie/BackButton";
 import { CastList } from "@/components/movie/CastList";
 import { TrailerButton } from "@/components/movie/TrailerButton";
@@ -50,8 +51,10 @@ async function Movie({ params }: Pick<Props, "params">) {
           <div className="absolute inset-x-0 top-0 h-40 bg-gradient-to-b from-black/50 to-transparent" />
         </div>
         <div className="flex min-h-[min(76svh,800px)] flex-col justify-between gap-16 px-4 pb-2 pt-[calc(var(--header-h)+1.25rem)] sm:min-h-[min(84svh,840px)] sm:px-6 lg:px-10">
-          <div>
+          {/* No alto, tudo o que se clica: Voltar à esquerda e as listas no canto oposto. */}
+          <div className="flex flex-wrap items-center justify-between gap-3">
             <BackButton />
+            <MarkButtons movieId={movie.id} />
           </div>
           <div className="space-y-5">
             <DisplayTitle>{movie.title}</DisplayTitle>
