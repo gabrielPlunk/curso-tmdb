@@ -63,7 +63,7 @@ Situações que a spec implica e que nenhum teste de tarefa cobriria sozinho. Ca
 
 ---
 
-### Tarefa 1: Base do Supabase (pacotes, variáveis, clientes, proxy e tabela)
+### Task 1: Base do Supabase (pacotes, variáveis, clientes, proxy e tabela)
 
 **Em linguagem simples:** aqui o site aprende a falar com o Supabase. Instalamos a biblioteca, guardamos o endereço e a chave pública do seu projeto e criamos o "porteiro" (`proxy.ts`), que a cada visita renova o crachá de quem está logado. Também escrevemos a receita da tabela onde as marcações vão morar, com a regra de que cada pessoa só enxerga as próprias. Nesta tarefa você cria o projeto no painel do Supabase, com o Claude te guiando.
 
@@ -90,7 +90,7 @@ Situações que a spec implica e que nenhum teste de tarefa cobriria sozinho. Ca
 - [ ] **Step 8:** `npm test` e `npm run build` → tudo passa, sem erro de cookies fora de Suspense.
 - [ ] **Step 9: Commit:** `feat: base do Supabase (clientes, proxy e tabela de marcações)`.
 
-### Tarefa 2: Regras da conta (voltar para, mensagens, usuário atual)
+### Task 2: Regras da conta (voltar para, mensagens, usuário atual)
 
 **Em linguagem simples:** são as regrinhas por trás do login, testadas sem precisar do Supabase de verdade. Para onde a pessoa volta depois de entrar (e o bloqueio para um link não mandar ninguém para fora do site), as mensagens de erro em português e quem é a pessoa logada agora.
 
@@ -120,7 +120,7 @@ Situações que a spec implica e que nenhum teste de tarefa cobriria sozinho. Ca
 - [ ] **Step 4:** `npx vitest run src/lib/auth` → PASS.
 - [ ] **Step 5: Commit:** `feat: regras da conta (voltar para, mensagens e usuário atual)`.
 
-### Tarefa 3: Entrar, criar conta e sair
+### Task 3: Entrar, criar conta e sair
 
 **Em linguagem simples:** as telas de entrar e de criar conta, e as "ações de servidor" que conferem a senha com o Supabase. Quando dá certo, o Supabase entrega o crachá, que vira um cookie, e você volta para onde estava. Quando dá errado, a mensagem aparece em português e o e-mail digitado continua no campo.
 
@@ -152,7 +152,7 @@ Situações que a spec implica e que nenhum teste de tarefa cobriria sozinho. Ca
 - [ ] **Step 6:** `npm test` → PASS. `npm run build` → PASS.
 - [ ] **Step 7: Commit:** `feat: telas de entrar e criar conta`.
 
-### Tarefa 4: Conta na barra superior
+### Task 4: Conta na barra superior
 
 **Em linguagem simples:** o canto direito da barra agora sabe se você entrou. Se não entrou, mostra "Entrar". Se entrou, mostra o círculo com a sua inicial e um menu com "Meu perfil" e "Sair". Só esse pedacinho espera o servidor conferir o crachá. O resto da barra aparece na hora.
 
@@ -172,7 +172,7 @@ Situações que a spec implica e que nenhum teste de tarefa cobriria sozinho. Ca
 - [ ] **Step 4:** `npm test` → PASS; `npm run build` → PASS.
 - [ ] **Step 5: Commit:** `feat: entrar e menu da conta na barra superior`.
 
-### Tarefa 5: Ler e gravar marcações
+### Task 5: Ler e gravar marcações
 
 **Em linguagem simples:** as duas operações do banco. "Ler as minhas marcações" e "marcar ou desmarcar um filme". O servidor confere quem você é antes de gravar e busca sozinho o título e o pôster no TMDB. Assim ninguém consegue mandar um título inventado. Como cada filme só pode ter uma linha por pessoa, marcar "Já vi" substitui o "Quero" automaticamente.
 
@@ -199,7 +199,7 @@ Situações que a spec implica e que nenhum teste de tarefa cobriria sozinho. Ca
 - [ ] **Step 4:** `npx vitest run src/lib/marks` → PASS.
 - [ ] **Step 5: Commit:** `feat: ler e gravar marcações no Supabase`.
 
-### Tarefa 6: Estado das marcações no navegador
+### Task 6: Estado das marcações no navegador
 
 **Em linguagem simples:** um "quadro de avisos" que fica aberto enquanto você navega e lembra o que você marcou. Quando você clica, o quadro muda na hora e avisa o servidor. Se o servidor recusar, ele desfaz e mostra "Não foi possível salvar. Tente de novo.". Ele é preenchido uma vez com os dados do servidor, num pedaço separado, para a vitrine não precisar esperar.
 
@@ -237,7 +237,7 @@ Situações que a spec implica e que nenhum teste de tarefa cobriria sozinho. Ca
 - [ ] **Step 4:** `npm test` → PASS; `npm run build` → PASS, e o log do build continua mostrando a home e o filme com esqueleto pré-gerado (◐/partial), não totalmente dinâmicos.
 - [ ] **Step 5: Commit:** `feat: estado das marcações no navegador`.
 
-### Tarefa 7: Botões na página do filme
+### Task 7: Botões na página do filme
 
 **Em linguagem simples:** os botões "Quero assistir" e "Já vi" no alto da página do filme, no canto oposto ao Voltar. Eles ficam invisíveis (mas ocupando o lugar) até o quadro de avisos chegar. Assim nunca aparecem num estado errado.
 
@@ -259,7 +259,7 @@ Situações que a spec implica e que nenhum teste de tarefa cobriria sozinho. Ca
 - [ ] **Step 4:** `npm test` → PASS.
 - [ ] **Step 5: Commit:** `feat: marcar filme na página do filme`.
 
-### Tarefa 8: Véu "Já assistido" e botões de hover nos pôsteres
+### Task 8: Véu "Já assistido" e botões de hover nos pôsteres
 
 **Em linguagem simples:** na vitrine, no "Ver tudo", na busca e no perfil, o pôster de um filme que você já viu ganha um véu escuro com "Já assistido". No computador, ao passar o mouse (ou ao chegar pelo Tab), aparecem dois ícones embaixo do pôster, e o nome de cada um aparece ao passar sobre ele. No celular os ícones não aparecem e o espaçamento não muda.
 
@@ -286,7 +286,7 @@ Situações que a spec implica e que nenhum teste de tarefa cobriria sozinho. Ca
 - [ ] **Step 5: Conferência visual** com `npm run build && npx next start -p 3100` e prints do Playwright (`channel: "chrome"`) da home em 1440px (mouse sobre um pôster, com e sem véu) e em 390px. Mostrar os prints ao Gabriel. Se os botões ficarem ruins entre as fileiras, falar com ele sobre a alternativa da spec (botões sobre a parte de baixo do pôster) antes de mudar.
 - [ ] **Step 6: Commit:** `feat: véu de já assistido e botões de hover nos pôsteres`.
 
-### Tarefa 9: Página de perfil
+### Task 9: Página de perfil
 
 **Em linguagem simples:** a página `/perfil`, com "Olá, {nome}" e as abas "Quero assistir" e "Já assisti", cada uma com sua grade. Ela só abre para quem entrou. A lista vem do banco quando a página abre. Se você desmarca um filme, ele fica no lugar até você sair da aba, mas a contagem muda na hora.
 
@@ -306,7 +306,7 @@ Situações que a spec implica e que nenhum teste de tarefa cobriria sozinho. Ca
 - [ ] **Step 4:** `npm test` → PASS; `npm run build` → PASS.
 - [ ] **Step 5: Commit:** `feat: página de perfil com as duas listas`.
 
-### Tarefa 10: Conferência de ponta a ponta
+### Task 10: Conferência de ponta a ponta
 
 **Em linguagem simples:** testar tudo como um visitante de verdade, no site gerado para produção. Criar conta, marcar, ver no perfil, sair e entrar de novo. Também conferimos com uma segunda conta que uma pessoa não enxerga a lista da outra.
 
