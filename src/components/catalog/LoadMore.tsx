@@ -58,7 +58,7 @@ export function LoadMore({ category, service, initialPage, initialHasMore, seenI
   return (
     <>
       {movies.length > 0 && (
-        <ul className={`${gridClass} mt-2.5 sm:mt-3.5`}>
+        <ul className={`${gridClass} mt-2.5 sm:mt-3.5 pointer-fine:mt-12`}>
           {movies.map((movie) => (
             <li key={movie.id}>
               <PosterCard movie={movie} />
