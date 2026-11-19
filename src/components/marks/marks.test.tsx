@@ -5,6 +5,7 @@ import { setMark } from "@/lib/marks/actions";
 import type { MarkRef, SetMarkResult } from "@/lib/marks/types";
 import { MarkButtons } from "./MarkButtons";
 import { MarksProvider, MarksSeed, useMarks } from "./MarksProvider";
+import { ProfileTabs } from "./ProfileTabs";
 
 const push = vi.fn();
 vi.mock("next/navigation", () => ({ useRouter: () => ({ push }) }));
@@ -142,4 +143,22 @@ test("MarkButtons desabilita os dois botões enquanto salva", async () => {
   await userEvent.click(screen.getByRole("button", { name: "Quero assistir" }));
   expect(screen.getByRole("button", { name: "Quero assistir" })).toBeDisabled();
   expect(screen.getByRole("button", { name: "Já vi" })).toBeDisabled();
+});
+
+test("ProfileTabs usa as contagens do servidor até as marcações chegarem", () => {
+  render(
+    <MarksProvider>
+      <ProfileTabs active="quero" serverCounts={{ quero: 2, assisti: 5 }} />
+    </MarksProvider>,
+  );
+  expect(screen.getByRole("link", { name: "Quero assistir · 2" })).toHaveAttribute("href", "/perfil?aba=quero");
+  expect(screen.getByRole("link", { name: "Quero assistir · 2" })).toHaveAttribute("aria-current", "page");
+  expect(screen.getByRole("link", { name: "Já assisti · 5" })).toHaveAttribute("href", "/perfil?aba=assisti");
+  expect(screen.getByRole("link", { name: "Já assisti · 5" })).not.toHaveAttribute("aria-current");
+});
+
+test("ProfileTabs passa a usar as contagens ao vivo", () => {
+  seeded(<ProfileTabs active="assisti" serverCounts={{ quero: 2, assisti: 5 }} />, [{ movieId: 1, status: "assisti" }]);
+  expect(screen.getByRole("link", { name: "Quero assistir · 0" })).toBeInTheDocument();
+  expect(screen.getByRole("link", { name: "Já assisti · 1" })).toHaveAttribute("aria-current", "page");
 });
