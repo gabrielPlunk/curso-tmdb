@@ -20,7 +20,11 @@ create table public.marcacoes (
 -- 2) Índice para buscar rápido "as marcações desta pessoa, das mais recentes para as mais antigas".
 create index marcacoes_user_marked_idx on public.marcacoes (user_id, marked_at desc);
 
--- 3) Segurança (RLS = Row Level Security). Com ela ligada, o banco recusa tudo que não tiver uma regra liberando.
+-- 3) Permissão para contas logadas usarem a tabela (as regras abaixo ainda limitam às próprias linhas).
+--    Projetos novos do Supabase podem não dar essa permissão sozinhos; repetir não faz mal.
+grant select, insert, update, delete on public.marcacoes to authenticated;
+
+-- 4) Segurança (RLS = Row Level Security). Com ela ligada, o banco recusa tudo que não tiver uma regra liberando.
 alter table public.marcacoes enable row level security;
 
 -- Cada regra libera uma operação só para as linhas da própria pessoa logada.

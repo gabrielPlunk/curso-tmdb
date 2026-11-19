@@ -21,3 +21,9 @@ test("recusa voltar para entrar ou criar conta (evita laço)", () => {
 test("usa o caminho reserva informado", () => {
   expect(safeReturnPath("//x", "/perfil")).toBe("/perfil");
 });
+
+test("recusa caracteres invisíveis que o navegador apaga (tab, quebra de linha)", () => {
+  for (const raw of ["/\t/evil.com", "/\n/evil.com", "/\r/evil.com", "/\u0000x", "/\u007f/evil.com"]) {
+    expect(safeReturnPath(raw)).toBe("/");
+  }
+});

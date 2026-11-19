@@ -43,7 +43,8 @@ function signInUrl() {
 }
 
 /**
- * O "quadro de avisos" das marcações no navegador. Fica no layout, então continua aberto enquanto a pessoa navega.
+ * O "quadro de avisos" das marcações no navegador. Fica no layout raiz (um só para o site todo),
+ * então continua aberto enquanto a pessoa navega entre a vitrine e o perfil.
  * Ao clicar, a tela muda na hora e o servidor é avisado; se ele recusar, a mudança é desfeita.
  */
 export function MarksProvider({ children }: { children: ReactNode }) {
@@ -56,6 +57,9 @@ export function MarksProvider({ children }: { children: ReactNode }) {
   // Cópias imediatas do estado: dois cliques seguidos acontecem antes de o React redesenhar a tela.
   const marksRef = useRef(marks);
   const pendingRef = useRef(new Set<number>());
+  // O último pacote vindo do servidor. Quando o Next reexibe uma página guardada (botão Voltar),
+  // o MarksSeed dela entrega de novo o mesmo pacote, já velho; ele é ignorado.
+  const lastSeedRef = useRef<MarkRef[] | null>(null);
 
   const apply = useCallback((movieId: number, status: MarkStatus | null) => {
     const next = new Map(marksRef.current);
@@ -72,6 +76,8 @@ export function MarksProvider({ children }: { children: ReactNode }) {
   }, []);
 
   const seed = useCallback((data: Seed) => {
+    if (data.marks === lastSeedRef.current) return;
+    lastSeedRef.current = data.marks;
     const map = new Map(data.marks.map((m) => [m.movieId, m.status] as const));
     marksRef.current = map;
     setMarks(map);

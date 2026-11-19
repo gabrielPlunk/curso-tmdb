@@ -51,7 +51,8 @@ export async function signUp(_prev: AuthFormState, form: FormData): Promise<Auth
 
 export async function signOut(form: FormData): Promise<void> {
   const supabase = await createSupabaseServer();
-  await supabase?.auth.signOut();
+  // scope "local": sai só deste aparelho e apaga o crachá daqui mesmo se o Supabase não responder.
+  await supabase?.auth.signOut({ scope: "local" });
   const volta = safeReturnPath(form.get("volta"));
   // O perfil só existe para quem está logado; quem sai dali vai para a vitrine.
   goBack(volta.startsWith("/perfil") ? "/" : volta);

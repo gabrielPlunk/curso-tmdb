@@ -6,6 +6,9 @@ const AUTH_PAGES = ["/entrar", "/criar-conta"];
 export function safeReturnPath(raw: unknown, fallback = "/"): string {
   if (typeof raw !== "string") return fallback;
   if (!raw.startsWith("/") || raw.startsWith("//") || raw.includes("\\")) return fallback;
+  // Caracteres invisíveis (tab, quebra de linha...) são apagados pelo navegador: "/<tab>/site.com" viraria "//site.com".
+  // eslint-disable-next-line no-control-regex
+  if (/[\u0000-\u001f\u007f]/.test(raw)) return fallback;
   const path = raw.split(/[?#]/)[0];
   if (AUTH_PAGES.includes(path)) return fallback;
   return raw;

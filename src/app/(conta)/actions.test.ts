@@ -87,7 +87,8 @@ test("signUp com senha curta não chama o Supabase", async () => {
 
 test("signOut a partir do perfil vai para a vitrine", async () => {
   await expect(signOut(form({ volta: "/perfil?aba=quero" }))).rejects.toThrow("NEXT_REDIRECT");
-  expect(auth.signOut).toHaveBeenCalled();
+  // Só este aparelho: não desconecta o celular, e apaga o crachá local mesmo se o Supabase não responder.
+  expect(auth.signOut).toHaveBeenCalledWith({ scope: "local" });
   expect(calls).toEqual(["refresh", "redirect:/"]);
 });
 

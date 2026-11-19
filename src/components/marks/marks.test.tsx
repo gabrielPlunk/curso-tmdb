@@ -1,4 +1,5 @@
 import { act, render, screen } from "@testing-library/react";
+import { Activity } from "react";
 import userEvent from "@testing-library/user-event";
 import { beforeEach, expect, test, vi } from "vitest";
 import { setMark } from "@/lib/marks/actions";
@@ -161,4 +162,22 @@ test("ProfileTabs passa a usar as contagens ao vivo", () => {
   seeded(<ProfileTabs active="assisti" serverCounts={{ quero: 2, assisti: 5 }} />, [{ movieId: 1, status: "assisti" }]);
   expect(screen.getByRole("link", { name: "Quero assistir · 0" })).toBeInTheDocument();
   expect(screen.getByRole("link", { name: "Já assisti · 1" })).toHaveAttribute("aria-current", "page");
+});
+
+test("reexibir uma página guardada (Voltar do navegador) não apaga o que foi marcado depois", async () => {
+  const marks: MarkRef[] = [];
+  const ui = (mode: "visible" | "hidden") => (
+    <MarksProvider>
+      <Activity mode={mode}>
+        <MarksSeed signedIn marks={marks} />
+      </Activity>
+      <Probe />
+    </MarksProvider>
+  );
+  const { rerender } = render(ui("visible"));
+  await userEvent.click(screen.getByText("assisti"));
+  expect(state()).toBe("true|true|assisti|false|0|1");
+  rerender(ui("hidden"));
+  rerender(ui("visible"));
+  expect(state()).toBe("true|true|assisti|false|0|1");
 });
