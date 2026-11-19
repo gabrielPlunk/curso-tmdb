@@ -9,6 +9,12 @@ test("rodapé tem o aviso e o logo do TMDB", () => {
   expect(screen.getByRole("img", { name: /TMDB/ })).toBeInTheDocument();
 });
 
+test("rodapé credita a JustWatch (a vitrine é filtrada com esses dados)", () => {
+  render(<SiteFooter />);
+  expect(screen.getByText(/Dados de streaming:/)).toBeInTheDocument();
+  expect(screen.getByRole("link", { name: "JustWatch" })).toHaveAttribute("href", "https://www.justwatch.com");
+});
+
 test("busca envia GET para /busca com o campo q", () => {
   render(<SearchForm />);
   const input = screen.getByRole("searchbox", { name: "Buscar filmes" });

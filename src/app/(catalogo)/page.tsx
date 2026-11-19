@@ -4,6 +4,7 @@ import { MovieRow } from "@/components/catalog/MovieRow";
 import { ServiceChips } from "@/components/catalog/ServiceChips";
 import { HomeSkeleton } from "@/components/catalog/Skeletons";
 import { parseService, withService } from "@/lib/params";
+import { buildShowcase } from "@/lib/showcase";
 import { CATEGORIES } from "@/lib/tmdb/config";
 import { getCategoryMovies, getFeatured } from "@/lib/tmdb/queries";
 
@@ -21,19 +22,13 @@ export default function HomePage({ searchParams }: PageProps<"/">) {
 async function Showcase({ searchParams }: Pick<PageProps<"/">, "searchParams">) {
   const service = parseService((await searchParams).servico);
 
-  // Tudo em paralelo. Uma fileira que falhar ou vier vazia simplesmente some.
+  // Tudo em paralelo. Uma fileira que falhar ou vier vazia some; se tudo falhar, aparece a tela de erro.
   const [featured, ...rows] = await Promise.allSettled([
     getFeatured(service),
     ...CATEGORIES.map((c) => getCategoryMovies(c.slug, service)),
   ]);
 
-  const visibleRows = CATEGORIES.map((category, i) => {
-    const result = rows[i];
-    const movies = result.status === "fulfilled" ? result.value.items : [];
-    return { category, movies };
-  }).filter((row) => row.movies.length > 0);
-
-  const hero = featured.status === "fulfilled" ? featured.value : null;
+  const { hero, rows: visibleRows } = buildShowcase(featured, rows);
 
   return (
     <>
