@@ -75,7 +75,7 @@ O autor escolheu **A**.
 
 ```
 [CATÁLOGO]                                   [🔍 Buscar]
-(Todos) (Netflix) (Prime Video) (Disney+) (Max) (Apple TV+) (Globoplay)
+(Todos) (Netflix) (Prime Video) (Disney+) (HBO Max) (Apple TV) (Globoplay)
 ┌──────────────────────────────────────────────────────┐
 │  Filme em destaque (imagem de fundo grande)          │
 │  Disponível na Netflix         [Ver detalhes]        │
