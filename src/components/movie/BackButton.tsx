@@ -21,7 +21,13 @@ export function BackButton() {
   const router = useRouter();
   const back = () => (inAppNavigations > 0 ? router.back() : router.push("/"));
   return (
-    <button type="button" onClick={back} className="pill glass pl-2.5 text-white transition-colors hover:bg-white/20">
+    // Botão "fantasma": sem fundo nem borda, para não competir com a pílula do cabeçalho logo acima.
+    // O -ml alinha a seta com a margem da página; o fundo só aparece ao passar o mouse.
+    <button
+      type="button"
+      onClick={back}
+      className="pill -ml-2.5 pl-2.5 text-white/80 transition-colors [text-shadow:0_1px_8px_rgb(0_0_0/0.5)] hover:bg-white/10 hover:text-white"
+    >
       <ChevronLeft className="text-lg" />
       Voltar
     </button>
