@@ -1,7 +1,7 @@
 import Link from "next/link";
 import { SERVICES, type ServiceSlug } from "@/lib/tmdb/config";
 
-const chip = "shrink-0 rounded-full border px-4 py-1.5 text-sm font-medium transition-colors";
+const chip = "shrink-0 whitespace-nowrap rounded-full border px-4 py-1.5 text-sm font-medium transition-colors";
 const on = "border-accent bg-accent text-black";
 const off = "border-white/15 text-white/80 hover:border-white/40 hover:text-white";
 

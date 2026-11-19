@@ -21,7 +21,7 @@ export function Carousel({ children, label }: { children: ReactNode; label: stri
         ref={ref}
         role="region"
         aria-label={label}
-        className="no-scrollbar flex snap-x snap-mandatory gap-2 overflow-x-auto scroll-smooth px-4 sm:gap-3 sm:px-6"
+        className="no-scrollbar flex snap-x snap-mandatory scroll-px-4 gap-2 overflow-x-auto scroll-smooth px-4 sm:scroll-px-6 sm:gap-3 sm:px-6"
       >
         {children}
       </div>
