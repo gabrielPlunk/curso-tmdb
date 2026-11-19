@@ -36,6 +36,17 @@ As contas e as listas "Quero assistir" / "Já assisti" ficam num projeto do Supa
 5. Em **SQL Editor**, cole o conteúdo de `supabase/migrations/0001_marcacoes.sql` e clique em **Run**. Em **Table Editor** deve aparecer a tabela `marcacoes` com o selo **RLS enabled**.
 6. Reinicie o `npm run dev`.
 
+### Conferir a segurança das listas
+
+Crie duas contas de teste pelo site (A e B) e rode, na raiz do projeto:
+
+```bash
+RLS_A_EMAIL=a@exemplo.com RLS_A_PASSWORD=... RLS_B_EMAIL=b@exemplo.com RLS_B_PASSWORD=... \
+  node --env-file=.env.local scripts/check-rls.mjs
+```
+
+O esperado é `OK`: a conta B não consegue ler, alterar, apagar nem criar marcações da conta A.
+
 ## Learn More
 
 To learn more about Next.js, take a look at the following resources:

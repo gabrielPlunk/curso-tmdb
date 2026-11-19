@@ -10,11 +10,8 @@ import { MarksSeed } from "./MarksProvider";
 export async function MarksLoader() {
   const user = await getCurrentUser();
   if (!user) return <MarksSeed signedIn={false} marks={[]} />;
-  try {
-    const marks = await getMyMarks();
-    // Para o navegador vai só o necessário: o id do filme e a lista.
-    return <MarksSeed signedIn marks={marks.map(({ movieId, status }) => ({ movieId, status }))} />;
-  } catch {
-    return null;
-  }
+  const marks = await getMyMarks().catch(() => null);
+  if (!marks) return null;
+  // Para o navegador vai só o necessário: o id do filme e a lista.
+  return <MarksSeed signedIn marks={marks.map(({ movieId, status }) => ({ movieId, status }))} />;
 }
