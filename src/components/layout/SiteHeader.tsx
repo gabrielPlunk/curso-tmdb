@@ -1,4 +1,6 @@
 import Link from "next/link";
+import { Suspense } from "react";
+import { AccountSlot } from "@/components/account/AccountSlot";
 import { SearchForm } from "./SearchForm";
 
 // Cabeçalho flutuante: uma pílula de vidro que acompanha a rolagem.
@@ -12,6 +14,10 @@ export function SiteHeader() {
         <div className="ml-auto w-full max-w-xs">
           <SearchForm />
         </div>
+        {/* Só este pedaço espera o servidor conferir a sessão; o resto da barra aparece na hora. */}
+        <Suspense fallback={<span aria-hidden className="size-10 shrink-0" />}>
+          <AccountSlot />
+        </Suspense>
       </div>
     </header>
   );
