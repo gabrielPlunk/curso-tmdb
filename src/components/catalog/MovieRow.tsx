@@ -6,12 +6,12 @@ import { PosterCard } from "./PosterCard";
 export function MovieRow({ title, href, movies }: { title: string; href?: string; movies: MovieSummary[] }) {
   if (!movies.length) return null;
   return (
-    <section className="space-y-2">
-      <div className="flex items-baseline justify-between px-4 sm:px-6">
-        <h2 className="text-lg font-bold sm:text-xl">{title}</h2>
+    <section>
+      <div className="flex items-baseline justify-between gap-4 px-4 sm:px-6 lg:px-10">
+        <h2 className="font-display text-xl font-bold tracking-tight [font-stretch:115%] sm:text-2xl">{title}</h2>
         {href && (
-          <Link href={href} className="text-sm text-white/60 hover:text-accent">
-            Ver tudo →
+          <Link href={href} className="shrink-0 text-sm font-medium text-white/60 transition-colors hover:text-white">
+            Ver tudo
           </Link>
         )}
       </div>

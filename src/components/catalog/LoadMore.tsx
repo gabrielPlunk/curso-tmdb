@@ -58,7 +58,7 @@ export function LoadMore({ category, service, initialPage, initialHasMore, seenI
   return (
     <>
       {movies.length > 0 && (
-        <ul className={`${gridClass} mt-2 sm:mt-3`}>
+        <ul className={`${gridClass} mt-2.5 sm:mt-3.5`}>
           {movies.map((movie) => (
             <li key={movie.id}>
               <PosterCard movie={movie} />
@@ -67,13 +67,13 @@ export function LoadMore({ category, service, initialPage, initialHasMore, seenI
         </ul>
       )}
       {hasMore && <div ref={sentinel} aria-hidden className="h-px" />}
-      {status === "loading" && <p className="py-6 text-center text-sm text-white/50">Carregando mais filmes…</p>}
+      {status === "loading" && <p className="py-8 text-center text-sm text-white/55">Carregando mais filmes…</p>}
       {status === "error" && (
         <div className="py-6 text-center">
           <button
             type="button"
             onClick={() => void load()}
-            className="rounded-md border border-white/20 px-4 py-2 text-sm hover:border-white/50"
+            className="pill glass px-5 py-2.5 transition-colors hover:bg-white/20"
           >
             Tentar carregar mais
           </button>

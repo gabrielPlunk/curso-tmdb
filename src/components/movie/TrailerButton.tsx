@@ -1,6 +1,7 @@
 "use client";
 
 import { useEffect, useRef, useState } from "react";
+import { CloseIcon, PlayIcon } from "@/components/ui/icons";
 import type { Trailer } from "@/lib/tmdb/types";
 
 // Abre o trailer numa janela por cima da página. Ao fechar, o vídeo sai da página (o som para).
@@ -14,12 +15,9 @@ export function TrailerButton({ trailer }: { trailer: Trailer }) {
 
   return (
     <>
-      <button
-        type="button"
-        onClick={() => setOpen(true)}
-        className="rounded-md bg-white px-4 py-2 text-sm font-semibold text-black hover:bg-white/85"
-      >
-        ▶ Trailer
+      <button type="button" onClick={() => setOpen(true)} className="btn-light">
+        <PlayIcon />
+        Ver trailer
       </button>
       {open && (
         <dialog
@@ -27,18 +25,19 @@ export function TrailerButton({ trailer }: { trailer: Trailer }) {
           onClose={() => setOpen(false)}
           onClick={(e) => e.target === e.currentTarget && dialog.current?.close()}
           aria-label={trailer.name}
-          className="m-auto w-[min(92vw,960px)] bg-transparent p-0 backdrop:bg-black/80"
+          className="m-auto w-[min(92vw,1100px)] bg-transparent p-0 text-white backdrop:bg-black/85 backdrop:backdrop-blur-sm"
         >
-          <div className="flex justify-end pb-2">
+          <div className="flex justify-end pb-3">
             <button
               type="button"
               onClick={() => dialog.current?.close()}
-              className="rounded-md bg-white/10 px-3 py-1 text-sm text-white hover:bg-white/20"
+              className="pill glass pl-2.5 transition-colors hover:bg-white/20"
             >
+              <CloseIcon className="text-base" />
               Fechar
             </button>
           </div>
-          <div className="aspect-video w-full overflow-hidden rounded-lg bg-black">
+          <div className="aspect-video w-full overflow-hidden rounded-[20px] bg-black ring-1 ring-white/10">
             <iframe
               src={`https://www.youtube-nocookie.com/embed/${trailer.youtubeKey}?autoplay=1`}
               title={trailer.name}

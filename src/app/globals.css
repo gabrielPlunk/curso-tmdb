@@ -1,15 +1,185 @@
 @import "tailwindcss";
 
-/* Tema escuro de vitrine. */
+/*
+  Tema "luz do filme": fundo preto de sala de cinema, texto branco e nenhuma cor de destaque fixa.
+  Quem pinta a página é a imagem do filme (ver AmbientLight).
+*/
 @theme {
-  --color-bg: #0f0f14;
-  --color-surface: #1a1a22;
-  --color-accent: #e8b04a;
+  --color-bg: #000000;
+  /* Fundo de espera das imagens: branco bem transparente, pega a cor da luz atrás. */
+  --color-surface: rgb(255 255 255 / 0.06);
   --font-sans: var(--font-geist-sans), system-ui, sans-serif;
+  --font-display: var(--font-archivo), var(--font-geist-sans), system-ui, sans-serif;
 }
 
 :root {
   color-scheme: dark;
+  /* Altura do cabeçalho flutuante. O destaque sobe essa medida para começar por baixo dele. */
+  --header-h: 4rem;
+}
+
+/*
+  Destaque "vazado": a imagem ocupa a largura toda, começa atrás do cabeçalho
+  e vai sumindo para baixo até se misturar com a luz ambiente (a máscara deixa ver o que está atrás).
+*/
+.bleed-top {
+  margin-top: calc(-1 * var(--header-h));
+}
+/*
+  Topo: a imagem aparece aos poucos atrás do cabeçalho.
+  Base: some devagar, em vários degraus (uma curva suave), para não marcar uma linha onde termina.
+*/
+.hero-fade {
+  --fade: linear-gradient(
+    to bottom,
+    rgb(0 0 0 / 0.25) 0%,
+    rgb(0 0 0 / 0.7) 7%,
+    #000 18%,
+    #000 42%,
+    rgb(0 0 0 / 0.88) 52%,
+    rgb(0 0 0 / 0.68) 62%,
+    rgb(0 0 0 / 0.45) 72%,
+    rgb(0 0 0 / 0.24) 82%,
+    rgb(0 0 0 / 0.08) 92%,
+    transparent 100%
+  );
+  -webkit-mask-image: var(--fade);
+  mask-image: var(--fade);
+}
+
+/* Contorno de foco visível para quem navega pelo teclado. */
+:focus-visible {
+  outline: 2px solid #fff;
+  outline-offset: 3px;
+}
+
+/* Vidro fosco: só onde há imagem atrás para desfocar (cabeçalho, filtro sobre o destaque, botões sobre fotos). */
+@utility glass {
+  background-color: rgb(255 255 255 / 0.1);
+  border: 1px solid rgb(255 255 255 / 0.14);
+  -webkit-backdrop-filter: blur(20px) saturate(1.6);
+  backdrop-filter: blur(20px) saturate(1.6);
+}
+
+/* Painel: uma placa translúcida sobre a luz ambiente (onde assistir, elenco). */
+@utility panel {
+  background-color: rgb(255 255 255 / 0.055);
+  border: 1px solid rgb(255 255 255 / 0.09);
+  box-shadow: inset 0 1px 0 rgb(255 255 255 / 0.06);
+}
+
+/* Etiqueta em forma de pílula (ano, nota, nome do serviço). */
+@utility pill {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.375rem;
+  border-radius: 9999px;
+  padding: 0.375rem 0.875rem;
+  font-size: 0.875rem;
+  line-height: 1.25rem;
+  font-weight: 500;
+  white-space: nowrap;
+}
+
+/* Botão principal: pílula branca, texto preto. */
+@utility btn-light {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+  border-radius: 9999px;
+  padding: 0.625rem 1.25rem;
+  background-color: #fff;
+  color: #000;
+  font-size: 0.875rem;
+  line-height: 1.25rem;
+  font-weight: 600;
+  transition: background-color 150ms;
+  &:hover {
+    background-color: rgb(255 255 255 / 0.82);
+  }
+}
+
+/*
+  Título de filme. A largura da letra vem do tamanho do título (titleFit em lib/format.ts):
+  --stretch vai de 125% (curto) a 68% (longo) e --scale diminui a letra dos títulos muito longos.
+*/
+.display-title {
+  font-family: var(--font-display);
+  font-weight: 800;
+  text-transform: uppercase;
+  line-height: 0.9;
+  letter-spacing: -0.005em;
+  font-stretch: var(--stretch, 100%);
+  font-size: calc(var(--title-size) * var(--scale, 1));
+  max-width: 11em;
+  text-wrap: balance;
+  overflow-wrap: break-word;
+  --title-size: clamp(2.4rem, 0.9rem + 5.6vw, 6.75rem);
+}
+.display-title[data-size="lg"] {
+  --title-size: clamp(2.2rem, 1rem + 3.6vw, 4.5rem);
+}
+/* Em tela estreita, letra larga demais não cabe: limita a largura. */
+@media (max-width: 639px) {
+  .display-title {
+    font-stretch: min(var(--stretch, 100%), 106%);
+  }
+}
+
+/*
+  Luz ambiente: a imagem do filme, bem desfocada, atrás da página inteira.
+  Cada troca de imagem entra como uma camada nova que aparece por cima da anterior.
+*/
+.ambient {
+  position: fixed;
+  inset: 0;
+  z-index: -1;
+  overflow: hidden;
+  pointer-events: none;
+  background: #000;
+}
+.ambient-layer {
+  position: absolute;
+  inset: -12%;
+  background-size: cover;
+  background-position: center;
+  filter: blur(64px) saturate(1.8) brightness(0.78);
+  animation: ambient-in 1.2s cubic-bezier(0.2, 0.7, 0.2, 1) both;
+}
+.ambient-layer[data-empty] {
+  background: #000;
+}
+/* Escurece um pouco a parte de baixo e as bordas, para o texto continuar legível. */
+.ambient-veil {
+  position: absolute;
+  inset: 0;
+  background:
+    radial-gradient(120% 70% at 50% 20%, transparent 0%, rgb(0 0 0 / 0.35) 70%, rgb(0 0 0 / 0.7) 100%),
+    linear-gradient(to bottom, rgb(0 0 0 / 0.18), rgb(0 0 0 / 0.5));
+}
+/* Grão de película bem leve: dá textura e evita "degraus" visíveis no degradê desfocado. */
+.ambient::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  opacity: 0.05;
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='180' height='180'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.85' numOctaves='2' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
+}
+@keyframes ambient-in {
+  from {
+    opacity: 0;
+    transform: scale(1.08);
+  }
+  to {
+    opacity: 1;
+    transform: scale(1);
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .ambient-layer {
+    animation: none;
+  }
 }
 
 /* Esconde a barra de rolagem dos carrosséis sem impedir a rolagem. */

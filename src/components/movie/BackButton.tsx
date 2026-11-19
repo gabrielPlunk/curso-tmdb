@@ -2,6 +2,7 @@
 
 import { usePathname, useRouter } from "next/navigation";
 import { useEffect } from "react";
+import { ChevronLeft } from "@/components/ui/icons";
 
 // Conta navegações dentro do site nesta aba (zera ao recarregar a página).
 let inAppNavigations = -1;
@@ -20,12 +21,9 @@ export function BackButton() {
   const router = useRouter();
   const back = () => (inAppNavigations > 0 ? router.back() : router.push("/"));
   return (
-    <button
-      type="button"
-      onClick={back}
-      className="rounded-full bg-black/50 px-3 py-1 text-sm text-white backdrop-blur hover:bg-black/70"
-    >
-      ← Voltar
+    <button type="button" onClick={back} className="pill glass pl-2.5 text-white transition-colors hover:bg-white/20">
+      <ChevronLeft className="text-lg" />
+      Voltar
     </button>
   );
 }

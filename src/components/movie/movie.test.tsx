@@ -32,7 +32,7 @@ test("TrailerButton remove o vídeo ao fechar", async () => {
   const user = userEvent.setup();
   render(<TrailerButton trailer={{ youtubeKey: "abc", name: "Trailer oficial" }} />);
   expect(screen.queryByTitle("Trailer oficial")).not.toBeInTheDocument();
-  await user.click(screen.getByRole("button", { name: "▶ Trailer" }));
+  await user.click(screen.getByRole("button", { name: "Ver trailer" }));
   expect(screen.getByTitle("Trailer oficial")).toHaveAttribute("src", expect.stringContaining("youtube-nocookie.com/embed/abc"));
   await user.click(screen.getByRole("button", { name: "Fechar" }));
   expect(screen.queryByTitle("Trailer oficial")).not.toBeInTheDocument();

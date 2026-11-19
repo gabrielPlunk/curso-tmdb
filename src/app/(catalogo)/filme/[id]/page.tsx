@@ -1,14 +1,16 @@
 import Image from "next/image";
 import { notFound } from "next/navigation";
 import { Suspense } from "react";
+import { AmbientSource } from "@/components/ambient/Ambient";
 import { MovieRow } from "@/components/catalog/MovieRow";
 import { MovieDetailSkeleton, RowSkeleton } from "@/components/catalog/Skeletons";
 import { BackButton } from "@/components/movie/BackButton";
 import { CastList } from "@/components/movie/CastList";
 import { TrailerButton } from "@/components/movie/TrailerButton";
 import { WatchProviders } from "@/components/movie/WatchProviders";
-import { formatMovieMeta } from "@/lib/format";
-import { tmdbImage } from "@/lib/tmdb/images";
+import { DisplayTitle } from "@/components/ui/DisplayTitle";
+import { movieMetaParts } from "@/lib/format";
+import { ambientImage, tmdbImage } from "@/lib/tmdb/images";
 import { getMovie, getSimilarStreaming } from "@/lib/tmdb/queries";
 import type { MovieDetails } from "@/lib/tmdb/types";
 import { parseMovieId } from "./parse-id";
@@ -17,9 +19,11 @@ type Props = PageProps<"/filme/[id]">;
 
 export default function MoviePage({ params }: Props) {
   return (
-    <Suspense fallback={<MovieDetailSkeleton />}>
-      <Movie params={params} />
-    </Suspense>
+    <div>
+      <Suspense fallback={<MovieDetailSkeleton />}>
+        <Movie params={params} />
+      </Suspense>
+    </div>
   );
 }
 
@@ -32,21 +36,40 @@ async function Movie({ params }: Pick<Props, "params">) {
 
   const backdrop = tmdbImage(movie.backdropPath, "w1280");
   const poster = tmdbImage(movie.posterPath, "w342");
-  const meta = formatMovieMeta(movie);
+  const meta = movieMetaParts(movie);
 
   return (
-    <article className="pb-8">
-      <div className="relative aspect-[16/9] max-h-[55vh] w-full bg-surface sm:aspect-[21/9]">
-        {backdrop && <Image src={backdrop} alt="" fill preload sizes="100vw" className="object-cover" />}
-        <div className="absolute inset-0 bg-gradient-to-t from-bg via-bg/30 to-transparent" />
-        <div className="absolute left-4 top-4 sm:left-6">
-          <BackButton />
-        </div>
-      </div>
+    <article className="space-y-12">
+      <AmbientSource src={ambientImage(movie)} />
 
-      <div className="relative mx-auto -mt-16 max-w-5xl space-y-8 px-4 sm:-mt-24 sm:px-6">
-        <div className="flex flex-col gap-5 md:flex-row md:gap-8">
-          <div className="relative aspect-[2/3] w-32 shrink-0 overflow-hidden rounded-lg bg-surface shadow-2xl ring-1 ring-white/10 sm:w-40 md:w-52">
+      {/* Abertura de ponta a ponta: a cena do filme some num degradê, com o título por cima. */}
+      <section className="bleed-top relative isolate">
+        <div aria-hidden className="hero-fade absolute inset-0 -z-10 overflow-hidden">
+          {backdrop && <Image src={backdrop} alt="" fill preload sizes="100vw" className="object-cover object-[center_25%]" />}
+          <div className="absolute inset-0 bg-gradient-to-r from-black/70 via-black/20 to-transparent" />
+          <div className="absolute inset-x-0 top-0 h-40 bg-gradient-to-b from-black/50 to-transparent" />
+        </div>
+        <div className="flex min-h-[min(76svh,800px)] flex-col justify-between gap-16 px-4 pb-2 pt-[calc(var(--header-h)+1.25rem)] sm:min-h-[min(84svh,840px)] sm:px-6 lg:px-10">
+          <div>
+            <BackButton />
+          </div>
+          <div className="space-y-5">
+            <DisplayTitle>{movie.title}</DisplayTitle>
+            <div className="flex flex-wrap items-center gap-2">
+              {movie.trailer && <TrailerButton trailer={movie.trailer} />}
+              {meta.map((part) => (
+                <span key={part} className="pill glass">
+                  {part}
+                </span>
+              ))}
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <div className="space-y-8 px-4 sm:px-6 lg:px-10">
+        <div className="grid gap-8 md:grid-cols-[11rem_1fr] lg:grid-cols-[13rem_1fr_22rem] lg:gap-10">
+          <div className="relative hidden aspect-[2/3] overflow-hidden rounded-2xl bg-surface shadow-[0_24px_60px_-20px_rgb(0_0_0/0.9)] ring-1 ring-white/10 md:block">
             {poster ? (
               <Image src={poster} alt={movie.title} fill sizes="208px" className="object-cover" />
             ) : (
@@ -55,32 +78,34 @@ async function Movie({ params }: Pick<Props, "params">) {
               </span>
             )}
           </div>
-          <div className="space-y-3 md:pt-24">
-            <h1 className="text-3xl font-extrabold sm:text-4xl">{movie.title}</h1>
-            {meta && <p className="text-sm text-white/70">{meta}</p>}
+
+          <div className="min-w-0 space-y-5">
             {movie.genres.length > 0 && (
               <ul className="flex flex-wrap gap-1.5">
                 {movie.genres.map((g) => (
-                  <li key={g.id} className="rounded-full border border-white/15 px-2.5 py-0.5 text-xs text-white/80">
+                  <li key={g.id} className="pill border border-white/20 py-1 text-xs text-white/85">
                     {g.name}
                   </li>
                 ))}
               </ul>
             )}
-            {movie.overview && <p className="max-w-2xl leading-relaxed text-white/85">{movie.overview}</p>}
-            {movie.trailer && <TrailerButton trailer={movie.trailer} />}
+            {movie.overview && (
+              <p className="max-w-[62ch] text-base leading-relaxed text-white/85 sm:text-lg sm:leading-relaxed">
+                {movie.overview}
+              </p>
+            )}
+            <div className="pt-4">
+              <CastList cast={movie.cast} />
+            </div>
           </div>
+
+          <WatchProviders watch={movie.watch} className="self-start md:col-span-2 lg:col-span-1" />
         </div>
-
-        <WatchProviders watch={movie.watch} />
-        <CastList cast={movie.cast} />
       </div>
 
-      <div className="mt-10">
-        <Suspense fallback={<RowSkeleton />}>
-          <Similar movie={movie} />
-        </Suspense>
-      </div>
+      <Suspense fallback={<RowSkeleton />}>
+        <Similar movie={movie} />
+      </Suspense>
     </article>
   );
 }

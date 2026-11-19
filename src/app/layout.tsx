@@ -1,6 +1,7 @@
 import type { Metadata } from "next";
-// Fonte guardada no próprio projeto (pacote geist): não depende de baixar do Google Fonts.
+// Fontes guardadas no próprio projeto: não dependem de baixar do Google Fonts.
 import { GeistSans } from "geist/font/sans";
+import { archivo } from "./fonts";
 import "./globals.css";
 
 export const metadata: Metadata = {
@@ -10,7 +11,7 @@ export const metadata: Metadata = {
 
 export default function RootLayout({ children }: LayoutProps<"/">) {
   return (
-    <html lang="pt-BR" className={`${GeistSans.variable} h-full antialiased`}>
+    <html lang="pt-BR" className={`${GeistSans.variable} ${archivo.variable} h-full antialiased`}>
       <body className="flex min-h-full flex-col bg-bg text-white">{children}</body>
     </html>
   );

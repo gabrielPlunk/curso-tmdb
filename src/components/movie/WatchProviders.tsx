@@ -12,25 +12,32 @@ const GROUPS: { key: keyof Omit<WatchOptions, "isEmpty">; label: string }[] = [
 function Logo({ provider }: { provider: Provider }) {
   const src = tmdbImage(provider.logoPath, "w92");
   return src ? (
-    <Image src={src} alt={provider.name} title={provider.name} width={44} height={44} className="rounded-lg" />
+    <Image
+      src={src}
+      alt={provider.name}
+      title={provider.name}
+      width={48}
+      height={48}
+      className="rounded-xl ring-1 ring-white/10"
+    />
   ) : (
-    <span title={provider.name} className="flex h-11 items-center rounded-lg bg-surface px-3 text-xs">
+    <span title={provider.name} className="flex h-12 items-center rounded-xl bg-white/10 px-3 text-xs">
       {provider.name}
     </span>
   );
 }
 
-export function WatchProviders({ watch }: { watch: WatchOptions }) {
+export function WatchProviders({ watch, className = "" }: { watch: WatchOptions; className?: string }) {
   return (
-    <section className="space-y-3">
-      <h2 className="text-lg font-bold">Onde assistir no Brasil</h2>
+    <section className={`panel space-y-5 rounded-3xl p-5 sm:p-6 ${className}`}>
+      <h2 className="font-display text-lg font-bold tracking-tight [font-stretch:115%]">Onde assistir no Brasil</h2>
       {watch.isEmpty ? (
         <p className="text-white/70">Não está disponível em streaming no Brasil agora.</p>
       ) : (
-        <div className="space-y-3">
+        <div className="space-y-4">
           {GROUPS.filter((g) => watch[g.key].length > 0).map((g) => (
-            <div key={g.key} className="space-y-1.5">
-              <h3 className="text-xs uppercase tracking-wide text-white/50">{g.label}</h3>
+            <div key={g.key} className="space-y-2">
+              <h3 className="text-sm text-white/55">{g.label}</h3>
               <ul className="flex flex-wrap gap-2">
                 {watch[g.key].map((p) => (
                   <li key={p.id}>
@@ -42,7 +49,7 @@ export function WatchProviders({ watch }: { watch: WatchOptions }) {
           ))}
         </div>
       )}
-      <p className="text-xs text-white/50">
+      <p className="text-xs text-white/45">
         Dados de streaming:{" "}
         <a href="https://www.justwatch.com" target="_blank" rel="noreferrer" className="underline hover:text-white">
           JustWatch
