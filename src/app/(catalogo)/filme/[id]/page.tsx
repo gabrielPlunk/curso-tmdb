@@ -8,7 +8,6 @@ import { CastList } from "@/components/movie/CastList";
 import { TrailerButton } from "@/components/movie/TrailerButton";
 import { WatchProviders } from "@/components/movie/WatchProviders";
 import { formatMovieMeta } from "@/lib/format";
-import { TmdbNotFoundError } from "@/lib/tmdb/client";
 import { tmdbImage } from "@/lib/tmdb/images";
 import { getMovie, getSimilarStreaming } from "@/lib/tmdb/queries";
 import type { MovieDetails } from "@/lib/tmdb/types";
@@ -24,19 +23,12 @@ export default function MoviePage({ params }: Props) {
   );
 }
 
-async function loadMovie(id: number): Promise<MovieDetails> {
-  try {
-    return await getMovie(id);
-  } catch (error) {
-    if (error instanceof TmdbNotFoundError) notFound();
-    throw error; // outros erros vão para a tela "Algo deu errado"
-  }
-}
-
 async function Movie({ params }: Pick<Props, "params">) {
   const id = parseMovieId((await params).id);
   if (!id) notFound();
-  const movie = await loadMovie(id);
+  // null = o filme não existe. Outros erros vão para a tela "Algo deu errado".
+  const movie = await getMovie(id);
+  if (!movie) notFound();
 
   const backdrop = tmdbImage(movie.backdropPath, "w1280");
   const poster = tmdbImage(movie.posterPath, "w342");

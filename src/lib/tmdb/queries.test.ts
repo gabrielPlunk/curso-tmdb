@@ -1,5 +1,5 @@
 import { beforeEach, expect, test, vi } from "vitest";
-import { tmdbFetch } from "./client";
+import { TmdbError, TmdbNotFoundError, tmdbFetch } from "./client";
 import { getCategoryMovies, getFeatured, getMovie, getSimilarStreaming, searchMovies } from "./queries";
 import type { TmdbMovieListItem } from "./raw-types";
 
@@ -37,7 +37,7 @@ const details = (overview: string) => ({
 
 test("getMovie busca a sinopse em inglês só quando a pt vem vazia", async () => {
   fetchMock.mockResolvedValueOnce(details("")).mockResolvedValueOnce({ overview: "EN" });
-  expect((await getMovie(10)).overview).toBe("EN");
+  expect((await getMovie(10))?.overview).toBe("EN");
   expect(fetchMock).toHaveBeenCalledTimes(2);
   expect(fetchMock.mock.calls[0][1]).toMatchObject({
     language: "pt-BR", append_to_response: "videos,credits,watch/providers", include_video_language: "pt,en",
@@ -46,8 +46,18 @@ test("getMovie busca a sinopse em inglês só quando a pt vem vazia", async () =
 
   fetchMock.mockReset();
   fetchMock.mockResolvedValueOnce(details("PT"));
-  expect((await getMovie(10)).overview).toBe("PT");
+  expect((await getMovie(10))?.overview).toBe("PT");
   expect(fetchMock).toHaveBeenCalledTimes(1);
+});
+
+// Erros não atravessam o "use cache" intactos no build de produção (viram um Error genérico),
+// então "não encontrado" precisa sair da função como valor, não como erro.
+test("getMovie devolve null quando o filme não existe, e repassa outros erros", async () => {
+  fetchMock.mockRejectedValueOnce(new TmdbNotFoundError("/movie/999"));
+  expect(await getMovie(999)).toBeNull();
+
+  fetchMock.mockRejectedValueOnce(new TmdbError("TMDB respondeu 500 em /movie/1", 500));
+  await expect(getMovie(1)).rejects.toMatchObject({ status: 500 });
 });
 
 test("getSimilarStreaming sem gêneros não chama a API", async () => {

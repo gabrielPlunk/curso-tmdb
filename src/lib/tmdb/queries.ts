@@ -1,7 +1,7 @@
 // Os "pedidos prontos" que as páginas usam. Cada resposta fica guardada (cache) por horas.
 import "server-only";
 import { cacheLife } from "next/cache";
-import { tmdbFetch } from "./client";
+import { TmdbNotFoundError, tmdbFetch } from "./client";
 import { LANGUAGE, REGION, resolveCategory, type CategorySlug, type ServiceSlug } from "./config";
 import { mapMovieDetails, pickHeroService } from "./details";
 import { buildDiscoverParams, toPage } from "./lists";
@@ -41,14 +41,25 @@ export async function getFeatured(service: ServiceSlug | null): Promise<Featured
   return { movie, service: pickHeroService(providers.results?.BR, service) };
 }
 
-export async function getMovie(id: number): Promise<MovieDetails> {
+/**
+ * Detalhes de um filme, ou `null` se ele não existe no TMDB.
+ * "Não encontrado" sai como valor, e não como erro, porque um erro lançado dentro do
+ * "use cache" chega à página como um Error genérico no build de produção.
+ */
+export async function getMovie(id: number): Promise<MovieDetails | null> {
   "use cache";
   cacheLife("filme");
-  const raw = await tmdbFetch<TmdbMovieDetailsRaw>(`/movie/${id}`, {
-    language: LANGUAGE,
-    append_to_response: "videos,credits,watch/providers",
-    include_video_language: "pt,en",
-  });
+  let raw: TmdbMovieDetailsRaw;
+  try {
+    raw = await tmdbFetch<TmdbMovieDetailsRaw>(`/movie/${id}`, {
+      language: LANGUAGE,
+      append_to_response: "videos,credits,watch/providers",
+      include_video_language: "pt,en",
+    });
+  } catch (error) {
+    if (error instanceof TmdbNotFoundError) return null;
+    throw error;
+  }
   let fallback: string | null = null;
   if (!raw.overview?.trim()) {
     const en = await tmdbFetch<{ overview?: string }>(`/movie/${id}`, { language: "en-US" });
