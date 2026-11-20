@@ -7,7 +7,10 @@ import { SearchForm } from "./SearchForm";
 export function SiteHeader() {
   return (
     <header className="sticky top-0 z-30 h-(--header-h) px-4 pt-3 sm:px-6 lg:px-10">
-      <div className="glass flex h-13 items-center gap-4 rounded-full pl-5 pr-1.5 shadow-[0_12px_40px_-12px_rgb(0_0_0/0.6)]">
+      <div className="relative isolate flex h-13 items-center gap-4 rounded-full pl-5 pr-1.5">
+        {/* O vidro da barra fica numa camada própria, atrás do conteúdo. Se ficasse na própria barra,
+            o menu da conta (que abre dentro dela) não conseguiria desfocar a página embaixo dele. */}
+        <span aria-hidden className="glass absolute inset-0 -z-10 rounded-full shadow-[0_12px_40px_-12px_rgb(0_0_0/0.6)]" />
         <Link href="/" className="shrink-0 font-display text-lg font-extrabold tracking-tight [font-stretch:125%]">
           Catálogo
         </Link>

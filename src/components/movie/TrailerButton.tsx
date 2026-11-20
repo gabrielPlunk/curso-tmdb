@@ -31,7 +31,7 @@ export function TrailerButton({ trailer }: { trailer: Trailer }) {
             <button
               type="button"
               onClick={() => dialog.current?.close()}
-              className="pill glass pl-2.5 transition-colors hover:bg-white/20"
+              className="pill glass pl-2.5 transition-colors glass-hover"
             >
               <CloseIcon className="text-base" />
               Fechar

@@ -58,7 +58,7 @@ async function Profile({ searchParams }: Pick<Props, "searchParams">) {
       {movies.length === 0 ? (
         <div className="space-y-4 py-16 text-center">
           <p className="text-white/60">Você ainda não marcou nenhum filme</p>
-          <Link href="/" className="pill glass px-5 py-2.5 transition-colors hover:bg-white/20">
+          <Link href="/" className="pill glass px-5 py-2.5 transition-colors glass-hover">
             Explorar a vitrine
           </Link>
         </div>

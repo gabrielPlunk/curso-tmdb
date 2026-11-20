@@ -33,7 +33,7 @@ export function MarkButtons({ movieId }: { movieId: number }) {
             disabled={busy || !marks.ready}
             onClick={() => marks.toggle(movieId, status)}
             className={`pill transition-colors disabled:cursor-wait ${
-              on ? "bg-white text-black hover:bg-white/85" : "glass text-white hover:bg-white/20"
+              on ? "bg-white text-black hover:bg-white/85" : "glass text-white glass-hover"
             }`}
           >
             <Icon className="text-base" />

@@ -73,7 +73,7 @@ export function LoadMore({ category, service, initialPage, initialHasMore, seenI
           <button
             type="button"
             onClick={() => void load()}
-            className="pill glass px-5 py-2.5 transition-colors hover:bg-white/20"
+            className="pill glass px-5 py-2.5 transition-colors glass-hover"
           >
             Tentar carregar mais
           </button>

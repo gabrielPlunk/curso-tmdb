@@ -50,7 +50,7 @@ export function PosterActions({ movieId }: { movieId: number }) {
             disabled={busy}
             onClick={() => marks.toggle(movieId, status)}
             className={`group/btn relative flex size-8 items-center justify-center rounded-full text-base transition-colors disabled:cursor-wait ${
-              on ? "bg-white text-black hover:bg-white/85" : "glass text-white hover:bg-white/25"
+              on ? "bg-white text-black hover:bg-white/85" : "glass text-white glass-hover"
             }`}
           >
             <Icon />

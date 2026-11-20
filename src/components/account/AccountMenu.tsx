@@ -44,7 +44,7 @@ export function AccountMenu({ user }: { user: CurrentUser }) {
         aria-expanded={open}
         aria-controls="account-menu"
         onClick={() => setOpen((v) => !v)}
-        className="glass flex size-10 items-center justify-center rounded-full font-display text-base font-bold transition-colors hover:bg-white/20"
+        className="glass flex size-10 items-center justify-center rounded-full font-display text-base font-bold transition-colors glass-hover"
       >
         {user.initial}
       </button>

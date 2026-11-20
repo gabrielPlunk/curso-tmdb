@@ -53,12 +53,23 @@
   outline-offset: 3px;
 }
 
-/* Vidro fosco: só onde há imagem atrás para desfocar (cabeçalho, filtro sobre o destaque, botões sobre fotos). */
+/* Vidro fosco: só onde há imagem atrás para desfocar (cabeçalho, filtro sobre o destaque, botões sobre fotos).
+   É um vidro "fumê": sobre o fundo preto fica igual a um branco a 10%, mas sobre fotos claras escurece
+   o bastante para o texto branco continuar legível.
+   Atenção: um vidro dentro de outro vidro não desfoca a página (só o que está dentro do vidro de fora).
+   Por isso a barra do topo desenha o vidro numa camada separada (veja SiteHeader). */
 @utility glass {
-  background-color: rgb(255 255 255 / 0.1);
+  background-color: rgb(44 44 44 / 0.58);
   border: 1px solid rgb(255 255 255 / 0.14);
   -webkit-backdrop-filter: blur(20px) saturate(1.6);
   backdrop-filter: blur(20px) saturate(1.6);
+}
+
+/* Hover dos botões de vidro: clareia um pouco sem perder o fumê (sobre o preto, igual a um branco a 20%). */
+@utility glass-hover {
+  &:hover {
+    background-color: rgb(82 82 82 / 0.62);
+  }
 }
 
 /* Painel: uma placa translúcida sobre a luz ambiente (onde assistir, elenco). */

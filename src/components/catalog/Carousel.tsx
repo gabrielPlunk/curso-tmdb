@@ -4,7 +4,7 @@ import { useRef, type ReactNode } from "react";
 import { ChevronLeft, ChevronRight } from "@/components/ui/icons";
 
 const arrow =
-  "glass absolute top-1/2 z-10 hidden h-12 w-12 -translate-y-1/2 items-center justify-center rounded-full text-2xl text-white opacity-0 transition-opacity hover:bg-white/20 group-hover/row:opacity-100 focus-visible:opacity-100 md:flex";
+  "glass absolute top-1/2 z-10 hidden h-12 w-12 -translate-y-1/2 items-center justify-center rounded-full text-2xl text-white opacity-0 transition-opacity glass-hover group-hover/row:opacity-100 focus-visible:opacity-100 md:flex";
 
 // Faixa que rola para o lado: no celular com o dedo; no computador também com as setas.
 // Com mouse (pointer-fine), sobra mais espaço embaixo para os ícones de marcar que aparecem sob o pôster.

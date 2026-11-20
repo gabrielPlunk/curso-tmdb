@@ -23,7 +23,7 @@ export function ProfileTabs({ active, serverCounts }: { active: MarkStatus; serv
             key={status}
             href={`/perfil?aba=${status}`}
             aria-current={on ? "page" : undefined}
-            className={`pill transition-colors ${on ? "bg-white text-black" : "glass text-white/85 hover:bg-white/20 hover:text-white"}`}
+            className={`pill transition-colors ${on ? "bg-white text-black" : "glass text-white/85 glass-hover hover:text-white"}`}
           >
             {`${label} · ${counts[status]}`}
           </Link>
